@@ -1,0 +1,13 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: notification-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/renthouses_notifications}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
