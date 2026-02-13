@@ -1,0 +1,50 @@
+version: '3.9'
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  asset-service:
+    build:
+      context: .
+      dockerfile: services/asset-service/Dockerfile
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/renthouses_assets
+    depends_on: [mongo]
+    ports: ["8081:8081"]
+
+  contract-service:
+    build:
+      context: .
+      dockerfile: services/contract-service/Dockerfile
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/renthouses_contracts
+      NOTIFICATION_SERVICE_URL: http://notification-service:8084
+      BILLING_SERVICE_URL: http://billing-service:8083
+    depends_on: [mongo, billing-service, notification-service]
+    ports: ["8082:8082"]
+
+  billing-service:
+    build:
+      context: .
+      dockerfile: services/billing-service/Dockerfile
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/renthouses_billing
+      NOTIFICATION_SERVICE_URL: http://notification-service:8084
+    depends_on: [mongo, notification-service]
+    ports: ["8083:8083"]
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/renthouses_notifications
+    depends_on: [mongo]
+    ports: ["8084:8084"]
+
+volumes:
+  mongo_data:

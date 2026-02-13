@@ -1,0 +1,13 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: asset-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/renthouses_assets}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

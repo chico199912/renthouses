@@ -1,0 +1,71 @@
+{
+  "info": {
+    "name": "RentHouses",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Landlord",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": "{{baseUrlAssets}}/api/assets/landlords",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Senhorio A\",\n  \"email\": \"landlord@example.com\",\n  \"phone\": \"+351910000000\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Tenant",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": "{{baseUrlAssets}}/api/assets/tenants",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Inquilino B\",\n  \"email\": \"tenant@example.com\",\n  \"phone\": \"+351920000000\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Contract",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": "{{baseUrlContracts}}/api/contracts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"landlordId\": \"LANDLORD_ID\",\n  \"landlordEmail\": \"landlord@example.com\",\n  \"tenantId\": \"TENANT_ID\",\n  \"tenantEmail\": \"tenant@example.com\",\n  \"guarantorName\": \"Fiador C\",\n  \"guarantorEmail\": \"guarantor@example.com\",\n  \"propertyId\": \"PROPERTY_ID\",\n  \"monthlyRent\": 900,\n  \"advanceRent\": 900,\n  \"securityDeposit\": 1800,\n  \"dueDay\": 8,\n  \"clauses\": [\"Pagamento até dia 8\",\"Proibido subarrendamento\"]\n}"
+        }
+      }
+    },
+    {
+      "name": "Tenant Dashboard",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrlBilling}}/api/billing/dashboard/tenant/tenant@example.com"
+      }
+    },
+    {
+      "name": "Mark Overdue",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrlBilling}}/api/billing/jobs/mark-overdue"
+      }
+    },
+    {
+      "name": "Terminate Contract",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrlContracts}}/api/contracts/{{contractId}}/terminate"
+      }
+    }
+  ],
+  "variable": [
+    {"key": "baseUrlAssets", "value": "http://localhost:8081"},
+    {"key": "baseUrlContracts", "value": "http://localhost:8082"},
+    {"key": "baseUrlBilling", "value": "http://localhost:8083"},
+    {"key": "contractId", "value": ""}
+  ]
+}
